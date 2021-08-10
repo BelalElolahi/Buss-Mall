@@ -58,3 +58,7 @@ footer{
     justify-content: center;
     text-transform: capitalize;
 }
+
+main ul{
+    visibility: hidden;
+}
