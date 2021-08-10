@@ -33,26 +33,23 @@ let imgElement1 = document.getElementById('img1');
 let imgElement2 = document.getElementById('img2');
 let imgElement3 = document.getElementById('img3');
 
-let allBusMallObjects = [];
-function BusMallImg(name, imgPath, numberofClicks = 0, numberOfSeen = 0) {
+let allBusMallObjects1 = [];
+function BusMallProduct(name, imgPath, numberofClicks = 0, numberOfSeen = 0) {
     this.name = name,
-        this.image = imgPath,
-        this.numberofClicks = 0,
-        this.numberOfSeen = 0,
-        allBusMallObjects.push(this)
+        this.imgPath = imgPath,
+        this.numberofClicks = numberofClicks,
+        this.numberOfSeen = numberOfSeen,
+        BusMallProduct.allBusMallObjects.push(this)
 
 }
 
-BusMallImg.allBusMallObjects = [];
+BusMallProduct.allBusMallObjects = [];
+//Initilizing Objects
+//localStorage.clear();
+gitData();
 
 
 
- //Initilizing Objects
- for (let i = 0; i < ArrayOfImages.length; i++) {
-    new BusMallImg(ArrayOfImages[i].split('.')[0]
-        , ArrayOfImages[i]);
-
-}
 
 
 
@@ -82,18 +79,24 @@ function render() {
         Image2 = getRandomNumber(0, ArrayOfImages.length - 1);
         Image3 = getRandomNumber(0, ArrayOfImages.length - 1);
     } */
-    imgElement1.src = "assets/img/" + allBusMallObjects[Image1].image;
-    imgElement2.src = "assets/img/" + allBusMallObjects[Image2].image;
-    imgElement3.src = "assets/img/" + allBusMallObjects[Image3].image;
+    imgElement1.src = "assets/img/"+ BusMallProduct.allBusMallObjects[Image1].imgPath;
+    console.log(BusMallProduct.allBusMallObjects.imgPath); 
+       imgElement2.src = "assets/img/"+ BusMallProduct.allBusMallObjects[Image2].imgPath;
+    imgElement3.src = "assets/img/"+ BusMallProduct.allBusMallObjects[Image3].imgPath;
     preventDuplicate();
 
-    allBusMallObjects[Image1].numberOfSeen++;
-    allBusMallObjects[Image2].numberOfSeen++;
-    allBusMallObjects[Image3].numberOfSeen++;
+    BusMallProduct.allBusMallObjects[Image1].numberOfSeen++;
+    BusMallProduct.allBusMallObjects[Image2].numberOfSeen++;
+    BusMallProduct.allBusMallObjects[Image3].numberOfSeen++;
+
+    // Add the objects to the localStorage by convarting thie objects to string; 
+    localStorage.data = JSON.stringify(BusMallProduct.allBusMallObjects);
+    console.log(localStorage.data);
+    
+
 
 
     
-
 
 
 }
@@ -120,14 +123,14 @@ function changeImage(event) {
 
         if (event.target.id == "img1") {
 
-            allBusMallObjects[Image1].numberofClicks++;
+            BusMallProduct.allBusMallObjects[Image1].numberofClicks++;
         } else if (event.target.id == "img2") {
 
-            allBusMallObjects[Image2].numberofClicks++;
+            BusMallProduct.allBusMallObjects[Image2].numberofClicks++;
 
         } else {
 
-            allBusMallObjects[Image3].numberofClicks++;
+            BusMallProduct.allBusMallObjects[Image3].numberofClicks++;
         }
 
 
@@ -151,9 +154,9 @@ function toggleButton(e) {
     buttonEle.style.visibility = 'visible';
     mainEle.appendChild(ulEle);
 
-    for (let i = 0; i < allBusMallObjects.length; i++) {
+    for (let i = 0; i < BusMallProduct.allBusMallObjects.length; i++) {
         let liEle = document.createElement('li');
-        liEle.textContent = allBusMallObjects[i].name + "  had " + allBusMallObjects[i].numberofClicks + "  Clicks " + " and was seen  " + allBusMallObjects[i].numberOfSeen + "  times.";
+        liEle.textContent = BusMallProduct.allBusMallObjects[i].name + "  had " + BusMallProduct.allBusMallObjects[i].numberofClicks + "  Clicks " + " and was seen  " + BusMallProduct.allBusMallObjects[i].numberOfSeen + "  times.";
         ulEle.appendChild(liEle);
     }
 
@@ -242,10 +245,10 @@ function createChart() {
     let arrayName = [];
     let arrayShown = [];
     let arrayOfClocks = [];
-    for (let i = 0; i < allBusMallObjects.length; i++) {
-        arrayName.push(allBusMallObjects[i].name);
-        arrayShown.push(allBusMallObjects[i].numberOfSeen);
-        arrayOfClocks.push(allBusMallObjects[i].numberofClicks);
+    for (let i = 0; i < BusMallProduct.allBusMallObjects.length; i++) {
+        arrayName.push(BusMallProduct.allBusMallObjects[i].name);
+        arrayShown.push(BusMallProduct.allBusMallObjects[i].numberOfSeen);
+        arrayOfClocks.push(BusMallProduct.allBusMallObjects[i].numberofClicks);
 
 
     }
@@ -297,4 +300,32 @@ function createChart() {
     });
 }
 
+
+function gitData() {
+  
+    //check if the  LocalStorage have an data
+    if (localStorage.data)//if has data will return true
+    {
+        // git the object form the localStorag as string !! 
+        // and convart it to Objects Using parse(); methode 
+        let data = JSON.parse(localStorage.data);
+        //Initilizing Objects
+        for (let i = 0; i < data.length; i++) {
+            new BusMallProduct(data[i].name, data[i].imgPath , data[i].numberofClicks, data[i].numberOfSeen);
+
+        }
+        console.log(data);
+
+
+    } else {
+       
+        //Initilizing Objects
+        for (let i = 0; i < ArrayOfImages.length; i++) {
+            new BusMallProduct(ArrayOfImages[i].split('.')[0]
+                , ArrayOfImages[i]);
+
+        }
+    }
+   
+}
 
