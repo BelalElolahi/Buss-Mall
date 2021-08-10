@@ -34,7 +34,7 @@ let imgElement2 = document.getElementById('img2');
 let imgElement3 = document.getElementById('img3');
 
 let allBusMallObjects = [];
-function BusMallImg(name, imgPath) {
+function BusMallImg(name, imgPath, numberofClicks = 0, numberOfSeen = 0) {
     this.name = name,
         this.image = imgPath,
         this.numberofClicks = 0,
@@ -46,12 +46,15 @@ function BusMallImg(name, imgPath) {
 BusMallImg.allBusMallObjects = [];
 
 
-//Initilizing Objects
-for (let i = 0; i < ArrayOfImages.length; i++) {
+
+ //Initilizing Objects
+ for (let i = 0; i < ArrayOfImages.length; i++) {
     new BusMallImg(ArrayOfImages[i].split('.')[0]
         , ArrayOfImages[i]);
 
 }
+
+
 
 let Image1 = 0;
 let Image2 = 0;
@@ -61,18 +64,18 @@ let secondround = [];
 /* console.log(Firstround);
 console.log(secondround); */
 function render() {
-     
-        Image1 = getRandomNumber(0, ArrayOfImages.length - 1);
 
-        do {
-            Image2 = getRandomNumber(0, ArrayOfImages.length - 1);
-            Image3 = getRandomNumber(0, ArrayOfImages.length - 1);
-        }
-        while (Image1 == Image2 || Image1 == Image3 || Image2 == Image3);
+    Image1 = getRandomNumber(0, ArrayOfImages.length - 1);
 
-         
+    do {
+        Image2 = getRandomNumber(0, ArrayOfImages.length - 1);
+        Image3 = getRandomNumber(0, ArrayOfImages.length - 1);
+    }
+    while (Image1 == Image2 || Image1 == Image3 || Image2 == Image3);
 
-    
+
+
+
 
     /* while (Image1 == Image2 || Image1 == Image3 || Image2 == Image3) {
         Image1 = getRandomNumber(0, ArrayOfImages.length - 1);
@@ -87,6 +90,10 @@ function render() {
     allBusMallObjects[Image1].numberOfSeen++;
     allBusMallObjects[Image2].numberOfSeen++;
     allBusMallObjects[Image3].numberOfSeen++;
+
+
+    
+
 
 
 }
@@ -109,7 +116,7 @@ function changeImage(event) {
 
     if ((event.target.id == "img1"
         || event.target.id == "img2"
-        || event.target.id == "img3") && counter < nuberOfRounds+1) {
+        || event.target.id == "img3") && counter < nuberOfRounds + 1) {
 
         if (event.target.id == "img1") {
 
@@ -163,14 +170,14 @@ function toggleButton(e) {
 }
 
 // prevent Duplicate imge With previous Round the next round
-function preventDuplicate() { 
+function preventDuplicate() {
 
-    
+
     if (counter % 2 == 0) {
-        if(counter == 0){
-            Firstround=[];
+        if (counter == 0) {
+            Firstround = [];
             counter++;
-            
+
         }
         Firstround.push(Image1);
         Firstround.push(Image2);
@@ -197,7 +204,7 @@ function preventDuplicate() {
 
         }
         secondround = [];
-        
+
 
 
     } else {
@@ -226,7 +233,7 @@ function preventDuplicate() {
 
         }
         Firstround = [];
-       
+
     }
 }
 
@@ -289,3 +296,5 @@ function createChart() {
         }
     });
 }
+
+
